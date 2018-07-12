@@ -909,7 +909,7 @@ heroes_df.isna().sum()
 
 In the cell below, join the two DataFrames.  Think about which sort of join you should use, as well as which columns you should join on.  Rename columns and manipulate as needed.  
 
-**_HINT:_** If the join throws an error message, consider setting the the column you want to join on as the index for each DataFrame.  
+**_HINT:_** If the join throws an error message, consider setting the column you want to join on as the index for each DataFrame.  
 
 
 ```python
