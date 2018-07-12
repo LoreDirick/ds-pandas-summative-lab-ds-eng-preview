@@ -30,7 +30,7 @@ Use pandas to read in each file and store them in DataFrames in the appropriate 
 
 ```python
 heroes_df = pd.read_csv('heroes_information.csv')
-powers_df = pd.read_csv('super_hero_powers.csv', dtype='str')
+powers_df = pd.read_csv('super_hero_powers.csv')
 display(heroes_df.head())
 powers_df.head()
 ```
@@ -611,7 +611,7 @@ powers_df.describe()
     </tr>
     <tr>
       <th>top</th>
-      <td>Box IV</td>
+      <td>Moses Magnum</td>
       <td>False</td>
       <td>False</td>
       <td>False</td>
@@ -661,28 +661,6 @@ powers_df.describe()
 </table>
 <p>4 rows × 168 columns</p>
 </div>
-
-
-
-
-```python
-heroes_df.dtypes
-```
-
-
-
-
-    name           object
-    Gender         object
-    Eye color      object
-    Race           object
-    Hair color     object
-    Height        float64
-    Publisher      object
-    Skin color     object
-    Alignment      object
-    Weight        float64
-    dtype: object
 
 
 
@@ -907,28 +885,6 @@ powers_df.isna().any()
 ```python
 mean_weight = np.mean(heroes_df.Weight)
 heroes_df['Weight'].fillna(mean_weight, inplace=True)
-heroes_df.isna().sum()
-```
-
-
-
-
-    name           0
-    Gender         0
-    Eye color      0
-    Race           0
-    Hair color     0
-    Height         0
-    Publisher     15
-    Skin color     0
-    Alignment      0
-    Weight         0
-    dtype: int64
-
-
-
-
-```python
 heroes_df.isna().sum()
 ```
 
@@ -1355,19 +1311,17 @@ heroes_and_powers_df.isna().sum()
 
 
 
-In the cell below, create a scatterplot of the height and weight of each hero, with weight as the y-axis.  Color each point in the scatterplot according to the gender of the superhero.
+In the cell below, subset male and female heroes into different dataframes.  Create a scatterplot of the height and weight of each hero, with weight as the y-axis.  Plot both the male and female heroes subset into each dataframe, and make the color for each point in the scatterplot correspond to the gender of the superhero.
 
 
 ```python
-### TODO: Fix legend 
-gender  = []
-for i in heroes_and_powers_df.Gender:
-    if i == 'Male':
-        gender.append('b')
-    else:
-        gender.append('r')
-plt.scatter(heroes_and_powers_df.Weight, heroes_and_powers_df.Height, c=gender)
-plt.legend({'b': 'Male', 'r': 'Female'})
+male_heroes_df = heroes_df[heroes_df['Gender'] == 'Male']
+female_heroes_df = heroes_df[heroes_df['Gender'] == 'Female']
+
+plt.figure(figsize=(10, 7))
+m = plt.scatter(male_heroes_df.Weight, male_heroes_df.Height, color='b')
+f = plt.scatter(female_heroes_df.Weight, female_heroes_df.Height, color='r')
+plt.legend((m, f), ('Male', 'Female'))
 plt.xlabel('Weight')
 plt.ylabel('Height')
 plt.title("Heroes by Weight and Height")
@@ -1381,15 +1335,14 @@ plt.title("Heroes by Weight and Height")
 
 
 
-![png](output_20_1.png)
+![png](output_18_1.png)
 
 
 Next, slice the DataFrame as needed and visualize the distribution of heights and weights by gender.  You should have 4 total plots.  
 
 
 ```python
-male_heroes_df = heroes_df[heroes_df['Gender'] == 'Male']
-female_heroes_df = heroes_df[heroes_df['Gender'] == 'Female']
+
 
 def show_distplot(dataframe, gender, column_name):
     plt.plot()
@@ -1409,7 +1362,7 @@ print("Median Height for male heroes: {}".format(np.median(male_heroes_df.Height
 ```
 
 
-![png](output_23_0.png)
+![png](output_21_0.png)
 
 
     Mean Height for male heroes: 107.27524752475247
@@ -1425,7 +1378,7 @@ print("Median weight for male heroes: {}".format(np.median(male_heroes_df.Weight
 ```
 
 
-![png](output_24_0.png)
+![png](output_22_0.png)
 
 
     Mean weight for male heroes: 52.03535681436996
@@ -1441,7 +1394,7 @@ print("Median weight for female heroes: {}".format(np.median(male_heroes_df.Heig
 ```
 
 
-![png](output_25_0.png)
+![png](output_23_0.png)
 
 
     Mean weight for female heroes: 107.27524752475247
@@ -1457,7 +1410,7 @@ print("Median weight for female heroes: {}".format(np.median(male_heroes_df.Weig
 ```
 
 
-![png](output_26_0.png)
+![png](output_24_0.png)
 
 
     Mean weight for female heroes: 27.265
@@ -1540,23 +1493,11 @@ top_5_bar_chart(marvel_top_5, publisher="Marvel Comics")
 ```
 
 
-    <matplotlib.figure.Figure at 0x1d59788b550>
+    <matplotlib.figure.Figure at 0x251025dbf60>
 
 
 
-![png](output_32_1.png)
-
-
-
-    None
-
-
-
-    <matplotlib.figure.Figure at 0x1d597901e10>
-
-
-
-![png](output_32_4.png)
+![png](output_30_1.png)
 
 
 
@@ -1564,11 +1505,23 @@ top_5_bar_chart(marvel_top_5, publisher="Marvel Comics")
 
 
 
-    <matplotlib.figure.Figure at 0x1d59792e550>
+    <matplotlib.figure.Figure at 0x25102781ac8>
 
 
 
-![png](output_32_7.png)
+![png](output_30_4.png)
+
+
+
+    None
+
+
+
+    <matplotlib.figure.Figure at 0x25102630208>
+
+
+
+![png](output_30_7.png)
 
 
 Analyze the results you found above to answer the following question:
